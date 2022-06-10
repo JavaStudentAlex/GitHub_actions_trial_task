@@ -1,5 +1,7 @@
 name: Summarizing Experiments
 on: [push]
+permissions:
+  contents: write
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,20 +23,5 @@ jobs:
         env:
           OUTPUT_FILE_TXT: ${{ secrets.OUTPUT_FILE_TXT }}
 
-      - name: switching from HTTPS to SSH
-        run: git remote set-url origin ${{ secrets.SSH }}
-
-      - name: add the file if it is new
-        run: git add --all .
-
-      - name: show the changes
-        run: git status
-
       - name: commit changed files
-        run: git commit -m "Auto updating repo summary"
-
-      - name: fetch from master
-        run: git fetch origin master
-
-      - name: push code to master
-        run: git push origin HEAD:master
+        uses: stefanzweifel/git-auto-commit-action@v4
