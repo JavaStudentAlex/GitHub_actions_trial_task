@@ -1,0 +1,38 @@
+name: Summarizing Experiments
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout the repo
+        uses: actions/checkout@v3
+
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8.10'
+          cache: 'pip'
+
+      - name: install the dependencies
+        run: pip install -r requirements.txt
+
+      - name: summarize the project content
+        run: python -u hello_world.py
+
+      - name: switching from HTTPS to SSH
+        run: git remote set-url origin ${{ secrets.SSH }}
+
+      - name: add the file if it is new
+        run: git add --all .
+
+      - name: show the changes
+        run: git status
+
+      - name: commit changed files
+        run: git commit -m "Auto updating repo summary"
+
+      - name: fetch from master
+        run: git fetch origin master
+
+      - name: push code to master
+        run: git push origin HEAD:master
