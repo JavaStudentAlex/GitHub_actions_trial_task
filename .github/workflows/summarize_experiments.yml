@@ -18,6 +18,8 @@ jobs:
 
       - name: summarize the project content
         run: python -u hello_world.py
+        env:
+          OUTPUT_FILE_TXT: ${{ secrets.OUTPUT_FILE_TXT }}
 
       - name: switching from HTTPS to SSH
         run: git remote set-url origin ${{ secrets.SSH }}
